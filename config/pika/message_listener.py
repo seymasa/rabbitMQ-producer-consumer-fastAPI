@@ -31,6 +31,7 @@ class PikaListener:
             try:
                 while True:
                     await asyncio.sleep(0.1)
+                    self._channel.start_consuming()
             except KeyboardInterrupt as e:
                 logger.exception(e)
             except Exception as e:
