@@ -22,8 +22,8 @@ async def init_queue():
 
 def create_app() -> FastAPI:
     app_ = FastAPI(
-        title="GIS Analytics Service",
-        description="GIS Analytics Service",
+        title="Example Service",
+        description="Example Service",
         version="1.0.0",
     )
     init_routers(app_=app_)
