@@ -10,7 +10,7 @@ def main():
         app="app.server:app",
         host=config.APP_HOST,
         port=config.APP_PORT,
-        reload=True,
+        reload=True
     )
 
 

@@ -26,12 +26,13 @@ class PikaListener:
             await self.queue.bind(queue=self.queue_name,exchange=self.exchange_name)
             await self.queue.consume(self.queue_name, self.message_handler.handle_message)
             logger.info(' [*] Waiting for messages on queue.')
+            await listen(self)
 
         async def listen(self):
             try:
                 while True:
                     await asyncio.sleep(0.1)
-                    self._channel.start_consuming()
+                    await self._channel.start_consuming()
             except KeyboardInterrupt as e:
                 logger.exception(e)
             except Exception as e:

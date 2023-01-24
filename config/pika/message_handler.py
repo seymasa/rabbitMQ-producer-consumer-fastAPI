@@ -7,7 +7,7 @@ class MessageHandler:
     def __init__(self):
         self._handlers = {}
 
-    def register_handler(self, message_type, handler):
+    async def register_handler(self, message_type, handler):
         self._handlers[message_type] = handler
 
     async def handle_message(self, message):

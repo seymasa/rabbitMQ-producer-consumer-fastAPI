@@ -15,7 +15,6 @@ class MQService:
         self.message_handler = MessageHandler()
         self.message_handler.register_handler("a_message", self.get_a_message)
         self.message_handler.register_handler("b_message", self.get_b_message)
-        self.listen()
 
     async def get_a_message(self, message):
         print(f"--> this message sanded from MQService: {message['message']}")

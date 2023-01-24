@@ -14,10 +14,9 @@ def init_logger():
 
 
 async def init_queue():
-    mq_service = await MQService()
+    mq_service = MQService()
     mq_service.message_handler.register_handler("a", mq_service.get_a_message)
     mq_service.message_handler.register_handler("b", mq_service.get_b_message)
-    await mq_service.listen()
 
 
 def create_app() -> FastAPI:
@@ -28,9 +27,13 @@ def create_app() -> FastAPI:
     )
     init_routers(app_=app_)
     init_logger()
-    init_queue()
-
     return app_
 
 
 app = create_app()
+
+
+@app.on_event('startup')
+def initial_task():
+    init_queue()
+
