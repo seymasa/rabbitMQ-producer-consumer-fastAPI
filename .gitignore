@@ -4,3 +4,4 @@
 myvenv
 */__pycache__
 */*/__pycache__/
+config/pika/__pycache__/message_listener.cpython-310.pyc
