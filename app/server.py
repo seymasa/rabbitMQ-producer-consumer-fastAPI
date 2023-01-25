@@ -17,6 +17,7 @@ async def init_queue():
     mq_service = MQService()
     mq_service.message_handler.register_handler("a", mq_service.get_a_message)
     mq_service.message_handler.register_handler("b", mq_service.get_b_message)
+    mq_service.listen()
 
 
 def create_app() -> FastAPI:
@@ -31,9 +32,3 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-
-
-@app.on_event('startup')
-def initial_task():
-    init_queue()
-

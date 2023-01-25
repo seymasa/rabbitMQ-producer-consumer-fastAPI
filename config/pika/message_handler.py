@@ -7,20 +7,20 @@ class MessageHandler:
     def __init__(self):
         self._handlers = {}
 
-    async def register_handler(self, message_type, handler):
+    def register_handler(self, message_type, handler):
         self._handlers[message_type] = handler
 
-    async def handle_message(self, message):
-        message_body = message.body
+    def handle_message(self, channel, method, properties, body):
+
         try:
-            message = json.loads(message_body.decode())
-            logger.info(f' [✓] Received {message_body!r} on queue {config.RABBITMQ_QUEUE}')
+            message = json.loads(body.decode())
+            channel.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
+            logger.info(f' [✓] Received {body!r} on queue {config.RABBITMQ_QUEUE}')
             message_type = message.get("type")
             if message_type in self._handlers:
                 logger.warning(f' [✓] message forwarded <successfully> to MQ Service for processing from MessageHandler..')
-                await self._handlers[message_type](message)
-                await message.ack()
+                self._handlers[message_type](message)
         except json.decoder.JSONDecodeError:
             logger.error(f' [x] message forwarded <not successfully> to MQ Service for processing from MessageHandler..')
-            await message.nack()
-            logger.error(f' [x] Rejected {message_body!r} on queue {config.RABBITMQ_QUEUE}')
+            channel.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
+            logger.error(f' [x] Rejected {body!r} on queue {config.RABBITMQ_QUEUE}')
